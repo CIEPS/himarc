@@ -155,8 +155,8 @@ function transform (result) {
           accumulator[current.type] = current.value;
           return accumulator;
         }, {});
-        if (!('subFields' in accumulator)) accumulator.subFields = {};
-        accumulator.subFields[subField.subFieldCode] = subField.subFieldInfo;
+        if (!('subFields' in accumulator)) accumulator.subFields = [];
+        accumulator.subFields.push({ [subField.subFieldCode]: subField.subFieldInfo });
       }
 
       return accumulator;
