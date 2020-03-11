@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .container {
+      display: flex;
+    }
+
+    textarea {
+      width: 50%;
+    }
+  </style>
+</head>
+
+<body>
+  <label>Sélectionner un fichier mrk</label>
+  <input type='file' accept=".mrk" onchange="main.openFile(event)">
+  <div class="container">
+    <textarea id="record-mrk" rows="50" onchange="main.refreshMrk(event)"></textarea>
+    <textarea id="record-json" rows="50"></textarea>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+
+</html>
