@@ -156,7 +156,7 @@ function transform (result) {
           return accumulator;
         }, {});
         if (!('subFields' in accumulator)) accumulator.subFields = [];
-        accumulator.subFields.push({ [subField.subFieldCode]: subField.subFieldInfo });
+        accumulator.subFields.push({ [subField.subFieldCode]: subField.subFieldInfo.trim() });
       }
 
       return accumulator;
