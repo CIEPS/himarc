@@ -10,7 +10,6 @@ export {
 function mrkToObject (data) {
   const result = syntaxAnalyzer(tokenizer(data));
   if (result.errors.length > 0) return result.errors;
-  console.log(transform(result));
   return transform(result);
 }
 
