@@ -1,8 +1,8 @@
 {
-  "name": "hiMarc",
+  "name": "himarc",
   "version": "1.0.0",
   "description": "another marc21 analyzer in text format",
-  "main": "src/hiMarc.js",
+  "main": "src/himarc.js",
   "directories": {
     "test": "test"
   },

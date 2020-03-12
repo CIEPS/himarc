@@ -1,5 +1,5 @@
 export default {
-  input: 'src/hiMarc.js',
+  input: 'src/himarc.js',
   output: [
     {
       file: 'lib/bundle-node.js',
@@ -8,7 +8,7 @@ export default {
     {
       file: 'lib/bundle-browser.js',
       format: 'iife',
-      name: 'mrkToObject'
+      name: 'himarc'
     }
   ]
 };
