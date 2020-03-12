@@ -8,9 +8,7 @@ export {
 };
 
 function mrkToObject (data) {
-  const result = syntaxAnalyzer(tokenizer(data));
-  if (result.errors.length > 0) return result.errors;
-  return transform(result);
+  return transform(syntaxAnalyzer(tokenizer(data)));
 }
 
 function tokenizer (input) {
