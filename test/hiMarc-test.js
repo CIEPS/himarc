@@ -89,27 +89,35 @@ describe('hiMarc', function () {
       expect(result).to.be.an('object');
       Object.keys(result).map(key => {
         const fieldInfo = result[key];
-        if (key.startsWith('00') || key === 'LDR') {
-          expect(fieldInfo).to.be.a('string');
-        } else {
-          if (key === '510') {
-            fieldInfo.map(subFieldInfo => {
-              expect(subFieldInfo).to.be.an('object');
-              expect(subFieldInfo).to.have.property('indicator1');
-              expect(subFieldInfo.indicator1).to.have.lengthOf(1);
-              expect(subFieldInfo).to.have.property('indicator2');
-              expect(subFieldInfo.indicator2).to.have.lengthOf(1);
-              expect(subFieldInfo).to.have.property('subFields');
-            });
-          } else {
-            expect(fieldInfo).to.be.an('object');
-            expect(fieldInfo).to.have.property('indicator1');
-            expect(fieldInfo.indicator1).to.have.lengthOf(1);
-            expect(fieldInfo).to.have.property('indicator2');
-            expect(fieldInfo.indicator2).to.have.lengthOf(1);
-            expect(fieldInfo).to.have.property('subFields');
-          }
+        if (['LDR', '007'].includes(key)) {
+          expect(fieldInfo).to.be.a('object');
+          expect(fieldInfo).to.have.property('positions');
+          return;
         }
+
+        if (key.startsWith('00') && !['LDR', '007'].includes(key)) {
+          expect(fieldInfo).to.be.a('string');
+          return;
+        }
+
+        if (key === '510') {
+          fieldInfo.map(subFieldInfo => {
+            expect(subFieldInfo).to.be.an('object');
+            expect(subFieldInfo).to.have.property('indicator1');
+            expect(subFieldInfo.indicator1).to.have.lengthOf(1);
+            expect(subFieldInfo).to.have.property('indicator2');
+            expect(subFieldInfo.indicator2).to.have.lengthOf(1);
+            expect(subFieldInfo).to.have.property('subFields');
+          });
+          return;
+        }
+
+        expect(fieldInfo).to.be.an('object');
+        expect(fieldInfo).to.have.property('indicator1');
+        expect(fieldInfo.indicator1).to.have.lengthOf(1);
+        expect(fieldInfo).to.have.property('indicator2');
+        expect(fieldInfo.indicator2).to.have.lengthOf(1);
+        expect(fieldInfo).to.have.property('subFields');
       });
     });
   });
