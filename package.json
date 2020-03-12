@@ -1,20 +1,21 @@
 {
   "name": "hiMarc",
   "version": "1.0.0",
-  "description": "",
-  "main": "main.js",
+  "description": "another marc21 analyzer in text format",
+  "main": "src/hiMarc.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "nyc mocha"
+    "test": "rollup -c && nyc mocha"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["marc21"],
+  "author": "rmeja@issn.org",
+  "license": "MIT",
   "devDependencies": {
     "chai": "^4.2.0",
     "mocha": "^7.1.0",
-    "nyc": "^15.0.0"
+    "nyc": "^15.0.0",
+    "rollup": "^2.0.5"
   }
 }
