@@ -73,7 +73,7 @@ function syntaxAnalyzer (tokens) {
       token.type = 'tag';
       const TAG = /^([0-9]{3}|LDR)$/;
       if (!TAG.test(token.value)) {
-        token.error = 'tag field is invalid';
+        token.message = 'tag field is invalid';
         errors.push(token);
       }
       return token;
@@ -88,7 +88,7 @@ function syntaxAnalyzer (tokens) {
       token.type = 'indicators';
       const INDICATOR = /^[0-9\\]{2}$/;
       if (!INDICATOR.test(token.value)) {
-        token.error = 'Indicators must have two characters in every variable data field';
+        token.message = 'Indicators must have two characters in every variable data field';
         errors.push(token);
       }
       return token;
@@ -101,13 +101,13 @@ function syntaxAnalyzer (tokens) {
         startPosition: token.startPosition
       };
       const ALPHANUMERIC = /[a-z0-9]/;
-      if (!ALPHANUMERIC.test(subFieldCode.value)) subFieldCode.error = 'subField code must be a lowercase alphabetic or numeric character';
+      if (!ALPHANUMERIC.test(subFieldCode.value)) subFieldCode.message = 'subField code must be a lowercase alphabetic or numeric character';
 
       const subFieldInfo = { type: 'subFieldInfo', startPosition: token.startPosition + 1 };
       if (token.value.length > 1) {
         subFieldInfo.value = token.value.slice(1);
       } else {
-        subFieldInfo.error = 'data element is empty';
+        subFieldInfo.message = 'data element is empty';
       }
 
       token.type = 'dataFieldInfo';
