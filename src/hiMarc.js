@@ -159,6 +159,18 @@ function transform (result) {
 
       return accumulator;
     }, {});
+  }).map(field => {
+    if (field.tag === 'LDR') field.value = formatLeader(field.value);
+
+    if (field.tag === '007') {
+      field.value = field.value.split('')
+        .reduce((accumulator, currentValue, index) => {
+          accumulator.positions[String(index).padStart(2, '0')] = currentValue;
+          return accumulator;
+        }, { positions: {} });
+    }
+
+    return field;
   }).reduce((accumulator, current) => {
     if ('value' in current) {
       accumulator[current.tag] = current.value;
@@ -176,4 +188,26 @@ function transform (result) {
     }
     return accumulator;
   }, {});
+}
+
+function formatLeader (leader) {
+  return {
+    positions: {
+      '00-04': leader.slice(0, 5),
+      '05': leader.charAt(5),
+      '06': leader.charAt(6),
+      '07': leader.charAt(7),
+      '08': leader.charAt(8),
+      '09': leader.charAt(9),
+      10: leader.charAt(10),
+      11: leader.charAt(11),
+      '12-16': leader.slice(12, 17),
+      17: leader.charAt(17),
+      18: leader.charAt(18),
+      19: leader.charAt(19),
+      20: leader.charAt(20),
+      21: leader.charAt(21),
+      22: leader.charAt(22)
+    }
+  };
 }
