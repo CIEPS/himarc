@@ -9,7 +9,13 @@
   "scripts": {
     "test": "rollup -c && nyc mocha"
   },
-  "keywords": ["marc21"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CIEPS/hiMarc.git"
+  },
+  "keywords": [
+    "marc21"
+  ],
   "author": "rmeja@issn.org",
   "license": "MIT",
   "devDependencies": {
