@@ -35,63 +35,115 @@ Ouput :
 
 ```json
 {
-  data: {
-    '264': {
-      indicator1: '3',
-      indicator2: '1',
-      subFields: [ { a: 'London' }, { b: 'Springer Nature Limited' } ]
+  "data": {
+    "264": {
+      "indicator1": "3",
+      "indicator2": "1",
+      "subFields": [
+        {
+          "a": "London"
+        },
+        {
+          "b": "Springer Nature Limited"
+        }
+      ]
     },
-    '336': {
-      indicator1: '\\',
-      indicator2: '\\',
-      subFields: [ { a: 'text' }, { '2': 'rdacontent' } ]
+    "336": {
+      "indicator1": "\\",
+      "indicator2": "\\",
+      "subFields": [
+        {
+          "a": "text"
+        },
+        {
+          "2": "rdacontent"
+        }
+      ]
     },
-    '337': {
-      indicator1: '\\',
-      indicator2: '\\',
-      subFields: [ { a: 'unmediated' }, { '2': 'rdamedia' } ]
+    "337": {
+      "indicator1": "\\",
+      "indicator2": "\\",
+      "subFields": [
+        {
+          "a": "unmediated"
+        },
+        {
+          "2": "rdamedia"
+        }
+      ]
     },
-    '510': [
+    "510": [
       {
-        indicator1: '\\',
-        indicator2: '\\',
-        subFields: [ { a: 'CABABSTRACTS' }, { '9': 'facet' } ]
+        "indicator1": "\\",
+        "indicator2": "\\",
+        "subFields": [
+          {
+            "a": "CABABSTRACTS"
+          },
+          {
+            "9": "facet"
+          }
+        ]
       },
       {
-        indicator1: '\\',
-        indicator2: '\\',
-        subFields: [ { a: 'CROSSREF' }, { '9': 'facet' } ]
+        "indicator1": "\\",
+        "indicator2": "\\",
+        "subFields": [
+          {
+            "a": "CROSSREF"
+          },
+          {
+            "9": "facet"
+          }
+        ]
       }
     ],
-    LDR: {
-      positions: {
-        '10': '2',
-        '11': '2',
-        '17': ' ',
-        '18': 'a',
-        '19': ' ',
-        '20': '4',
-        '21': '5',
-        '22': '0',
-        '00-04': '02105',
-        '05': 'c',
-        '06': 'a',
-        '07': 's',
-        '08': ' ',
-        '09': 'a',
-        '12-16': '00541'
+    "LDR": {
+      "positions": {
+        "10": "2",
+        "11": "2",
+        "17": " ",
+        "18": "a",
+        "19": " ",
+        "20": "4",
+        "21": "5",
+        "22": "0",
+        "00-04": "02105",
+        "05": "c",
+        "06": "a",
+        "07": "s",
+        "08": " ",
+        "09": "a",
+        "12-16": "00541"
       }
     },
-    '001': '0028-0836',
-    '007': { positions: { '00': 't', '01': 'a' } },
-    '008': '190816c18699999enkwr|p       0   a0eng',
-    '035': {
-      indicator1: '\\',
-      indicator2: '\\',
-      subFields: [ { a: '(ISSN)00280836' } ]
+    "001": "0028-0836",
+    "007": {
+      "positions": {
+        "00": "t",
+        "01": "a"
+      }
     },
-    '044': { indicator1: '\\', indicator2: '\\', subFields: [ { c: 'GBR' } ] }
+    "008": "190816c18699999enkwr|p       0   a0eng",
+    "035": {
+      "indicator1": "\\",
+      "indicator2": "\\",
+      "subFields": [
+        {
+          "a": "(ISSN)00280836"
+        }
+      ]
+    },
+    "044": {
+      "indicator1": "\\",
+      "indicator2": "\\",
+      "subFields": [
+        {
+          "c": "GBR"
+        }
+      ]
+    }
   },
-  errors: []
+  "errors": []
 }
 ```
