@@ -7,12 +7,23 @@ export {
   transform
 };
 
+/**
+ * The mrkToObject function takes the raw marc21 text, tokenize it, parse it and transform it into a javascript object
+ * @param {string} data raw marc21 text
+ * @returns {Object}
+ */
 function mrkToObject (data) {
   const result = syntaxAnalyzer(tokenizer(data));
   result.data = transform(result);
   return result;
 }
 
+/**
+ * The tokenizer function takes the raw marc21 text and splits it apart into tokens. Tokens are an array of tiny little
+ * objects that describe an isolated piece of the syntax. They could be numbers, labels, punctuation, operators, whatever.
+ * @param {string} input raw marc21 text
+ * @returns {Array}
+ */
 function tokenizer (input) {
   const WHITESPACE = /\s/;
   const EOL = /\n/;
@@ -60,6 +71,12 @@ function tokenizer (input) {
   return tokens;
 }
 
+/**
+ * The syntaxAnalyzer function takes the tokens and reformats them into a representation that describes each part of the
+ * syntax and their relation to one another.
+ * @param {Array} tokens tokens from the tokenizer function
+ * @returns {Array}
+ */
 function syntaxAnalyzer (tokens) {
   const errors = [];
 
@@ -138,6 +155,12 @@ function syntaxAnalyzer (tokens) {
   return { data, errors };
 }
 
+/**
+ * The transform function takes the the tokens after the syntax analysis step and builds a representation of the Marc21 
+ * data into a javascript object
+ * @param {Object} result Object fromt the syntaxAnalyzer function
+ * @returns {Object}
+ */
 function transform (result) {
   return result.data.map(fieldsInfo => {
     return fieldsInfo.reduce((accumulator, current) => {
