@@ -20,7 +20,7 @@ function mrkToObject (data) {
 
 /**
  * The tokenizer function takes the raw marc21 text and splits it apart into tokens. Tokens are an array of tiny little
- * objects that describe an isolated piece of the syntax. They could be numbers, labels, punctuation, operators, whatever.
+ * objects that describe an isolated piece of the syntax.
  * @param {string} input raw marc21 text
  * @returns {Array}
  */
