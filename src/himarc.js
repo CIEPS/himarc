@@ -156,7 +156,7 @@ function syntaxAnalyzer (tokens) {
 }
 
 /**
- * The transform function takes the the tokens after the syntax analysis step and builds a representation of the Marc21 
+ * The transform function takes the the tokens after the syntax analysis step and builds a representation of the Marc21
  * data into a javascript object
  * @param {Object} result Object fromt the syntaxAnalyzer function
  * @returns {Object}
