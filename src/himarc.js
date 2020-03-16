@@ -65,7 +65,7 @@ function tokenizer (input) {
       value += char;
       char = input[++position];
     }
-    tokens.push({ type: 'data', value: value.trim(), startPosition });
+    tokens.push({ type: 'data', value: value, startPosition });
   }
 
   return tokens;
