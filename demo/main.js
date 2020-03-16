@@ -1,4 +1,4 @@
-import { mrkToObject } from '../src/hiMarc.js';
+import { mrkToObject } from '../src/himarc.js';
 
 export function openFile (event) {
   const input = event.target;
