@@ -20,8 +20,8 @@
   "license": "MIT",
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^7.1.0",
+    "mocha": "^7.1.1",
     "nyc": "^15.0.0",
-    "rollup": "^2.0.5"
+    "rollup": "^2.1.0"
   }
 }
