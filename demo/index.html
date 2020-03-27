@@ -13,6 +13,23 @@
     textarea {
       width: 50%;
     }
+
+    #editor {
+      font-size: 1rem;
+      white-space: pre-wrap;
+    }
+
+    .startField,
+    .tag {
+      color: blue;
+      font-weight: bold;
+    }
+
+    .subFieldCodeDelimiter,
+    .subFieldCode {
+      color: green;
+      font-weight: bold;
+    }
   </style>
 </head>
 
@@ -20,10 +37,16 @@
   <label>Sélectionner un fichier mrk</label>
   <input type='file' accept=".mrk" onchange="main.openFile(event)">
   <div class="container">
-    <textarea id="record-mrk" rows="50" onchange="main.refreshMrk(event)"></textarea>
-    <textarea id="record-json" rows="50"></textarea>
+    <textarea id="record-mrk" rows="20" onchange="main.refreshMrk(event)"></textarea>
+    <textarea id="record-json" rows="20"></textarea>
   </div>
 
+  <p>
+    An example of live Marc21 text syntax highlighting in a content-editable element.
+  </p>
+
+  <pre contentEditable='true' id='editor'></pre>
+ 
   <script src="main.js"></script>
 </body>
 
