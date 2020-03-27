@@ -3,13 +3,11 @@ import { mrkToObject, tokenizer, syntaxAnalyzer } from '../src/himarc.js';
 const editor = document.getElementById('editor');
 editor.addEventListener('keydown', event => {
   if (event.keyCode === 13) {
-    document.execCommand('insertHTML', false, '\n');
+    document.execCommand('insertHTML', false, '\n=');
     event.preventDefault();
-  } else {
-    updateEditor(event.target, 'bop');
   }
 });
-editor.innerHTML = '=044 \\\\$cFIN';
+editor.innerHTML = '=044 \\\\$cFIN$cENG';
 updateEditor(editor);
 
 export function openFile (event) {
@@ -43,6 +41,7 @@ export function updateEditor (element) {
 }
 
 function getCaretPosition (element) {
+  if (window.getSelection().rangeCount === 0) return null;
   const range = window.getSelection().getRangeAt(0);
   const preCaretRange = range.cloneRange();
   preCaretRange.selectNodeContents(element);
@@ -59,7 +58,11 @@ function generateHTML (parsedContent) {
     }
     if (Array.isArray(current.value)) {
       const value = current.value.map(item => {
-        return `<span class="${item.type}">${item.value}</span>`;
+        if (item.type === 'subFieldCode') {
+          return `<span class="${item.type}">${item.value}</span>`;
+        } else {
+          return item.value;
+        }
       }).join('');
       accumulator += value;
       return accumulator;
