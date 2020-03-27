@@ -32,29 +32,26 @@ describe('hiMarc', function () {
       expect(result).to.have.property('data');
       expect(result.data).to.be.an('array');
       result.data.map(fieldInfo => {
-        expect(fieldInfo).to.be.an('array');
-        fieldInfo.map(item => {
-          expect(item).to.be.an('object');
-          expect(item).to.have.property('type');
-          expect(item.type).to.be.a('string');
-          expect(item).to.have.property('value');
-          if (item.type === 'dataFieldInfo') {
-            expect(item.value).to.be.a('array');
-            item.value.map(item => {
-              expect(item).to.be.an('object');
-              expect(item).to.have.property('type');
-              expect(item.type).to.be.a('string');
-              expect(item).to.have.property('value');
-              expect(item.value).to.be.a('string');
-              expect(item).to.have.property('startPosition');
-              expect(item.startPosition).to.be.a('number');
-            });
-          } else {
-            expect(item.value).to.be.a('string');
-          }
-          expect(item).to.have.property('startPosition');
-          expect(item.startPosition).to.be.a('number');
-        });
+        expect(fieldInfo).to.be.an('object');
+        expect(fieldInfo).to.have.property('type');
+        expect(fieldInfo.type).to.be.a('string');
+        expect(fieldInfo).to.have.property('value');
+        if (fieldInfo.type === 'dataFieldInfo') {
+          expect(fieldInfo.value).to.be.a('array');
+          fieldInfo.value.map(fieldInfo => {
+            expect(fieldInfo).to.be.an('object');
+            expect(fieldInfo).to.have.property('type');
+            expect(fieldInfo.type).to.be.a('string');
+            expect(fieldInfo).to.have.property('value');
+            expect(fieldInfo.value).to.be.a('string');
+            expect(fieldInfo).to.have.property('startPosition');
+            expect(fieldInfo.startPosition).to.be.a('number');
+          });
+        } else {
+          expect(fieldInfo.value).to.be.a('string');
+        }
+        expect(fieldInfo).to.have.property('startPosition');
+        expect(fieldInfo.startPosition).to.be.a('number');
       });
       expect(result).to.have.property('errors');
       expect(result.errors).to.be.an('array');
