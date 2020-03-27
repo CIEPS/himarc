@@ -6,10 +6,11 @@ editor.addEventListener('keydown', event => {
     document.execCommand('insertHTML', false, '\n');
     event.preventDefault();
   } else {
-    updateEditor(event, 'bop');
+    updateEditor(event.target, 'bop');
   }
 });
-editor.innerHTML = '=044 \\\\$cFIN\n ';
+editor.innerHTML = '=044 \\\\$cFIN';
+updateEditor(editor);
 
 export function openFile (event) {
   const input = event.target;
@@ -32,8 +33,8 @@ export function refreshMrk (event) {
 // CONTENTEDITABLE
 // workflow : User Inputs -> Parsing -> Rendering -> Set caret position
 
-export function updateEditor (event, name) {
-  const editor = event.target;
+export function updateEditor (element) {
+  const editor = element;
   const caretPosition = getCaretPosition(editor);
   const textContent = editor.innerText;
   const parsedContent = syntaxAnalyzer(tokenizer(textContent));
