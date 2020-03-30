@@ -1,4 +1,4 @@
-import { mrkToObject, tokenizer, syntaxAnalyzer } from '../src/himarc.js';
+import { mrkToObject, tokenizer, syntaxAnalyzer, toHTML } from '../src/himarc.js';
 
 const editor = document.getElementById('editor');
 editor.addEventListener('keydown', event => {
@@ -36,8 +36,8 @@ export function updateEditor (element) {
   const caretPosition = getCaretPosition(editor);
   const textContent = editor.innerText;
   const parsedContent = syntaxAnalyzer(tokenizer(textContent));
-  editor.innerHTML = generateHTML(parsedContent.data);
-  restoreSelection(editor, caretPosition);
+  editor.innerHTML = toHTML(parsedContent.data);
+  setCaretPosition(editor, caretPosition);
 }
 
 function getCaretPosition (element) {
@@ -50,29 +50,7 @@ function getCaretPosition (element) {
   return caretOffset;
 }
 
-function generateHTML (parsedContent) {
-  return parsedContent.reduce((accumulator, current) => {
-    if (['whitespace', 'eol'].includes(current.type)) {
-      accumulator += current.value;
-      return accumulator;
-    }
-    if (Array.isArray(current.value)) {
-      const value = current.value.map(item => {
-        if (item.type === 'subFieldCode') {
-          return `<span class="${item.type}">${item.value}</span>`;
-        } else {
-          return item.value;
-        }
-      }).join('');
-      accumulator += value;
-      return accumulator;
-    }
-    accumulator += `<span class="${current.type}">${current.value}</span>`;
-    return accumulator;
-  }, '');
-}
-
-function restoreSelection (editor, absoluteAnchorIndex) {
+function setCaretPosition (editor, absoluteAnchorIndex) {
   const sel = window.getSelection();
   const textSegments = getTextSegments(editor);
   let anchorNode = editor;
