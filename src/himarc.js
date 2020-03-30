@@ -4,7 +4,8 @@ export {
   mrkToObject,
   tokenizer,
   syntaxAnalyzer,
-  transform
+  toHimarc,
+  toHTML
 };
 
 /**
@@ -14,7 +15,7 @@ export {
  */
 function mrkToObject (data) {
   const result = syntaxAnalyzer(tokenizer(data));
-  result.data = transform(result);
+  result.data = toHimarc(result);
   return result;
 }
 
@@ -152,12 +153,12 @@ function syntaxAnalyzer (tokens) {
 }
 
 /**
- * The transform function takes the the tokens after the syntax analysis step and builds a representation of the Marc21
+ * The toHimarc transform function takes the the tokens after the syntax analysis step and builds a representation of the Marc21
  * data into a javascript object
  * @param {Object} result Object fromt the syntaxAnalyzer function
  * @returns {Object}
  */
-function transform (result) {
+function toHimarc (result) {
   return result.data.map((token, index) => (token.type === 'startField') ? index : null)
     .filter(indice => indice !== null)
     .reduce((accumulator, currentValue, index, arr) => {
@@ -223,6 +224,28 @@ function transform (result) {
       }
       return accumulator;
     }, {});
+}
+
+function toHTML (parsedContent) {
+  return parsedContent.reduce((accumulator, current) => {
+    if (['whitespace', 'eol'].includes(current.type)) {
+      accumulator += current.value;
+      return accumulator;
+    }
+    if (Array.isArray(current.value)) {
+      const value = current.value.map(item => {
+        if (item.type === 'subFieldCode') {
+          return `<span class="${item.type}">${item.value}</span>`;
+        } else {
+          return item.value;
+        }
+      }).join('');
+      accumulator += value;
+      return accumulator;
+    }
+    accumulator += `<span class="${current.type}">${current.value}</span>`;
+    return accumulator;
+  }, '');
 }
 
 function formatLeader (leader) {
