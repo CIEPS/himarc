@@ -6,7 +6,7 @@ const { expect } = require('chai');
 const fs = require('fs');
 const path = require('path');
 const mrkRecord = fs.readFileSync(path.join(__dirname, './data/nature.mrk'), 'utf8');
-const { tokenizer, syntaxAnalyzer, transform } = require('../lib/bundle-node.js');
+const { tokenizer, syntaxAnalyzer, toHimarc } = require('../lib/bundle-node.js');
 
 describe('hiMarc', function () {
   describe('tokenizer()', function () {
@@ -80,9 +80,9 @@ describe('hiMarc', function () {
     });
   });
 
-  describe('transform()', function () {
+  describe('toHimarc()', function () {
     it('should return an record Object JS next the parsing step', function () {
-      const result = transform(syntaxAnalyzer(tokenizer(mrkRecord)));
+      const result = toHimarc(syntaxAnalyzer(tokenizer(mrkRecord)));
       expect(result).to.be.an('object');
       Object.keys(result).map(key => {
         const fieldInfo = result[key];
