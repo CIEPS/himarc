@@ -83,39 +83,123 @@ describe('hiMarc', function () {
   describe('toHimarc()', function () {
     it('should return an record Object JS next the parsing step', function () {
       const result = toHimarc(syntaxAnalyzer(tokenizer(mrkRecord)));
-      expect(result).to.be.an('object');
-      Object.keys(result).map(key => {
-        const fieldInfo = result[key];
-        if (['LDR', '007'].includes(key)) {
-          expect(fieldInfo).to.be.a('object');
-          expect(fieldInfo).to.have.property('positions');
-          return;
-        }
-
-        if (key.startsWith('00') && !['LDR', '007'].includes(key)) {
-          expect(fieldInfo).to.be.a('string');
-          return;
-        }
-
-        if (key === '510') {
-          fieldInfo.map(subFieldInfo => {
-            expect(subFieldInfo).to.be.an('object');
-            expect(subFieldInfo).to.have.property('indicator1');
-            expect(subFieldInfo.indicator1).to.have.lengthOf(1);
-            expect(subFieldInfo).to.have.property('indicator2');
-            expect(subFieldInfo.indicator2).to.have.lengthOf(1);
-            expect(subFieldInfo).to.have.property('subFields');
-          });
-          return;
-        }
-
-        expect(fieldInfo).to.be.an('object');
-        expect(fieldInfo).to.have.property('indicator1');
-        expect(fieldInfo.indicator1).to.have.lengthOf(1);
-        expect(fieldInfo).to.have.property('indicator2');
-        expect(fieldInfo.indicator2).to.have.lengthOf(1);
-        expect(fieldInfo).to.have.property('subFields');
-      });
+      const expectedResult = {
+        264: [
+          {
+            indicator1: '3',
+            indicator2: '1',
+            subFields: [{ a: 'London' }, { b: 'Springer Nature Limited' }]
+          }
+        ],
+        336: [
+          {
+            indicator1: '\\',
+            indicator2: '\\',
+            subFields: [{ a: 'text' }, { 2: 'rdacontent' }]
+          }
+        ],
+        337: [
+          {
+            indicator1: '\\',
+            indicator2: '\\',
+            subFields: [{ a: 'unmediated' }, { 2: 'rdamedia' }]
+          }
+        ],
+        338: [
+          {
+            indicator1: '\\',
+            indicator2: '\\',
+            subFields: [{ a: 'volume' }, { 2: 'rdacarrier' }]
+          }
+        ],
+        510: [
+          {
+            indicator1: '\\',
+            indicator2: '\\',
+            subFields: [{ a: 'CABABSTRACTS' }, { 9: 'facet' }]
+          },
+          {
+            indicator1: '\\',
+            indicator2: '\\',
+            subFields: [{ a: 'CROSSREF' }, { 9: 'facet' }]
+          }
+        ],
+        LDR: {
+          positions: {
+            10: '2',
+            11: '2',
+            17: ' ',
+            18: 'a',
+            19: ' ',
+            20: '4',
+            21: '5',
+            22: '0',
+            '00-04': '02105',
+            '05': 'c',
+            '06': 'a',
+            '07': 's',
+            '08': ' ',
+            '09': 'a',
+            '12-16': '00541'
+          }
+        },
+        '001': '0028-0836',
+        '003': 'ISSN',
+        '005': '20190817162300.0',
+        '007': [{
+          positions: {
+            10: 'p',
+            11: 'a',
+            12: 'b',
+            13: 'p',
+            '00': 'c',
+            '01': 'u',
+            '02': ' ',
+            '03': 'g',
+            '04': 'n',
+            '05': ' ',
+            '06-08': '008',
+            '09': 'a'
+          }
+        }],
+        '008': '190816c18699999enkwr|p       0   a0eng  ',
+        '035': [
+          {
+            indicator1: '\\',
+            indicator2: '\\',
+            subFields: [{ a: '(ISSN)00280836' }]
+          }
+        ],
+        '039': [
+          {
+            indicator1: '\\',
+            indicator2: '9',
+            subFields: [
+              { a: '201908171623' },
+              { b: 'VLOAD' },
+              { c: '201908171559' },
+              { d: 'VLOAD' },
+              { c: '201908161254' },
+              { d: 'ICBIB' },
+              { c: '201905041728' },
+              { d: 'VLOAD' },
+              { y: '200406091632' },
+              { z: 'load' },
+              { w: 'GBR_20190816.mrc' },
+              { x: '3' }
+            ]
+          }
+        ],
+        '044': { indicator1: '\\', indicator2: '\\', subFields: [{ c: 'GBR' }] },
+        ABC: [
+          {
+            indicator1: '1',
+            indicator2: '2',
+            subFields: [{ a: 'Lorem' }, { B: 'Ipsum' }, { c: 'Dolor' }]
+          }
+        ]
+      };
+      expect(result).to.be.deep.equal(expectedResult);
     });
   });
 });
