@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/CIEPS/hiMarc.svg?branch=master)](https://travis-ci.org/CIEPS/hiMarc)
-![Version](https://img.shields.io/badge/version-1.2.1-blue.svg?cacheSeconds=2592000)
+![npm](https://img.shields.io/npm/v/himarc)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#)
 
 # himarc
