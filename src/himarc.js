@@ -197,6 +197,13 @@ function toHimarc (result) {
       if (field.tag === '007') field.value = formatField007(field.value);
       return field;
     })
+    .map((field, index, arr) => {
+      if (field.tag === '008') {
+        const leader = arr.filter(item => item.tag === 'LDR')[0].value;
+        field.value = formatField008(field.value, leader.positions['06']);
+      }
+      return field;
+    })
     .reduce((accumulator, current) => {
       if ('value' in current) {
         if (isFieldRepeatable(current.tag)) {
@@ -272,47 +279,128 @@ function formatLeader (leader) {
 }
 
 function formatField007 (value) {
-  const fieldInfos = value.split('').map((value, index) => ({
+  let fieldInfos;
+  const categoryOfMaterial = value.split('')[0];
+  const initFieldInfos = (data, size) => {
+    return data.padStart(size).split('').map((value, index) => ({
+      position: String(index).padStart(2, '0'),
+      value
+    }));
+  };
+  const isMaps = (categoryOfMaterial) => categoryOfMaterial === 'a';
+  if (isMaps(categoryOfMaterial)) {
+    fieldInfos = initFieldInfos(value, 8);
+  }
+  const isElectroniceRessource = (categoryOfMaterial) => categoryOfMaterial === 'c';
+  if (isElectroniceRessource(categoryOfMaterial)) {
+    fieldInfos = initFieldInfos(value, 14);
+    spliceAndSetData(fieldInfos, 6, 9, value);
+  }
+  const isGlobe = (categoryOfMaterial) => categoryOfMaterial === 'd';
+  if (isGlobe(categoryOfMaterial)) {
+    fieldInfos = initFieldInfos(value, 6);
+  }
+  const isTactileMaterial = (categoryOfMaterial) => categoryOfMaterial === 'f';
+  if (isTactileMaterial(categoryOfMaterial)) {
+    fieldInfos = initFieldInfos(value, 10);
+    spliceAndSetData(fieldInfos, 6, 9, value);
+    spliceAndSetData(fieldInfos, 3, 5, value);
+  }
+  const isProjectedGraphic = (categoryOfMaterial) => categoryOfMaterial === 'g';
+  if (isProjectedGraphic(categoryOfMaterial)) {
+    fieldInfos = initFieldInfos(value, 9);
+  }
+  const isMicroForm = (categoryOfMaterial) => categoryOfMaterial === 'h';
+  if (isMicroForm(categoryOfMaterial)) {
+    fieldInfos = initFieldInfos(value, 13);
+    spliceAndSetData(fieldInfos, 6, 9, value);
+  }
+  const isNonprojectedGraphic = (categoryOfMaterial) => categoryOfMaterial === 'k';
+  if (isNonprojectedGraphic(categoryOfMaterial)) {
+    fieldInfos = initFieldInfos(value, 6);
+  }
+  const isMotionPicture = (categoryOfMaterial) => categoryOfMaterial === 'm';
+  if (isMotionPicture(categoryOfMaterial)) {
+    fieldInfos = initFieldInfos(value, 23);
+    spliceAndSetData(fieldInfos, 17, 23, value);
+  }
+  const isKit = (categoryOfMaterial) => categoryOfMaterial === 'o';
+  const isNotatedMusic = (categoryOfMaterial) => categoryOfMaterial === 'q';
+  const isText = (categoryOfMaterial) => categoryOfMaterial === 't';
+  const isUnspecified = (categoryOfMaterial) => categoryOfMaterial === 'z';
+  if (isKit(categoryOfMaterial) || isNotatedMusic(categoryOfMaterial) || isText(categoryOfMaterial) || isUnspecified(categoryOfMaterial)) {
+    fieldInfos = initFieldInfos(value, 2);
+  }
+  const isRemoteSensingImage = (categoryOfMaterial) => categoryOfMaterial === 'r';
+  if (isRemoteSensingImage(categoryOfMaterial)) {
+    fieldInfos = initFieldInfos(value, 11);
+    spliceAndSetData(fieldInfos, 9, 11, value);
+  }
+  const isSoundRecording = (categoryOfMaterial) => categoryOfMaterial === 's';
+  if (isSoundRecording(categoryOfMaterial)) {
+    fieldInfos = initFieldInfos(value, 14);
+  }
+  const isVideoRecording = (categoryOfMaterial) => categoryOfMaterial === 'v';
+  if (isVideoRecording(categoryOfMaterial)) {
+    fieldInfos = initFieldInfos(value, 9);
+  }
+
+  return fieldInfos.reduce((accumulator, current) => {
+    accumulator.positions[current.position] = current.value;
+    return accumulator;
+  }, { positions: {} });
+}
+
+function formatField008 (value, typeOfRecord) {
+  const fieldInfos = value.padStart(40).split('').map((value, index) => ({
     position: String(index).padStart(2, '0'),
     value
   }));
-
-  if (['c', 'h'].includes(fieldInfos[0].value)) {
-    if (fieldInfos.length > 7) {
-      fieldInfos.splice(6, 3, {
-        position: '06-08',
-        value: value.substring(6, 9)
-      });
-    }
+  spliceAndSetData(fieldInfos, 35, 38, value);
+  const isBooks = (type) => ['a', 't'].includes(type);
+  if (isBooks(typeOfRecord)) {
+    spliceAndSetData(fieldInfos, 24, 28, value);
+    spliceAndSetData(fieldInfos, 18, 22, value);
   }
-
-  if (fieldInfos[0].value === 'f') {
-    if (fieldInfos.length > 4) {
-      fieldInfos.splice(3, 2, {
-        position: '03-04',
-        value: value.substring(3, 5)
-      });
-    }
+  const isComputerFields = (type) => type === 'm';
+  if (isComputerFields(typeOfRecord)) {
+    spliceAndSetData(fieldInfos, 29, 35, value);
+    spliceAndSetData(fieldInfos, 24, 26, value);
+    spliceAndSetData(fieldInfos, 18, 22, value);
   }
-
-  if (fieldInfos[0].value === 'm') {
-    if (fieldInfos.length > 18) {
-      fieldInfos.splice(17, 6, {
-        position: '17-22',
-        value: value.substring(17, 23)
-      });
-    }
+  const isMaps = (type) => ['e', 'f'].includes(type);
+  if (isMaps(typeOfRecord)) {
+    spliceAndSetData(fieldInfos, 33, 35, value);
+    spliceAndSetData(fieldInfos, 26, 28, value);
+    spliceAndSetData(fieldInfos, 22, 24, value);
+    spliceAndSetData(fieldInfos, 18, 22, value);
   }
-
-  if (fieldInfos[0].value === 'r') {
-    if (fieldInfos.length > 10) {
-      fieldInfos.splice(9, 2, {
-        position: '09-10',
-        value: value.substring(9, 11)
-      });
-    }
+  const isMusic = (type) => ['c', 'd', 'i', 'j'].includes(type);
+  if (isMusic(typeOfRecord)) {
+    spliceAndSetData(fieldInfos, 30, 32, value);
+    spliceAndSetData(fieldInfos, 24, 30, value);
+    spliceAndSetData(fieldInfos, 18, 20, value);
   }
-
+  const isContinuingResources = (type) => type === 's';
+  if (isContinuingResources(typeOfRecord)) {
+    spliceAndSetData(fieldInfos, 30, 33, value);
+    spliceAndSetData(fieldInfos, 25, 28, value);
+  }
+  const isVisualMaterials = (type) => ['g', 'k', 'o', 'r'].includes(type);
+  if (isVisualMaterials(typeOfRecord)) {
+    spliceAndSetData(fieldInfos, 30, 33, value);
+    spliceAndSetData(fieldInfos, 23, 27, value);
+    spliceAndSetData(fieldInfos, 18, 20, value);
+  }
+  const isMixedMaterials = (type) => type === 'p';
+  if (isMixedMaterials(typeOfRecord)) {
+    spliceAndSetData(fieldInfos, 24, 35, value);
+    spliceAndSetData(fieldInfos, 18, 23, value);
+  }
+  spliceAndSetData(fieldInfos, 15, 17, value);
+  spliceAndSetData(fieldInfos, 11, 15, value);
+  spliceAndSetData(fieldInfos, 7, 11, value);
+  spliceAndSetData(fieldInfos, 0, 6, value);
   return fieldInfos.reduce((accumulator, current) => {
     accumulator.positions[current.position] = current.value;
     return accumulator;
@@ -341,6 +429,13 @@ function getPreviousToken (arr, index) {
   } else {
     return null;
   }
+}
+
+function spliceAndSetData (arr, start, end, data) {
+  arr.splice(start, (end - start), {
+    position: `${String(start).padStart(2, '0')}-${String(end - 1).padStart(2, '0')}`,
+    value: data.substring(start, end)
+  });
 }
 
 function isFieldRepeatable (tag) {
