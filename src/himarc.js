@@ -397,7 +397,7 @@ function formatField008 (value, typeOfRecord) {
     spliceAndSetData(fieldInfos, 24, 35, value);
     spliceAndSetData(fieldInfos, 18, 23, value);
   }
-  spliceAndSetData(fieldInfos, 15, 17, value);
+  spliceAndSetData(fieldInfos, 15, 18, value);
   spliceAndSetData(fieldInfos, 11, 15, value);
   spliceAndSetData(fieldInfos, 7, 11, value);
   spliceAndSetData(fieldInfos, 0, 6, value);
