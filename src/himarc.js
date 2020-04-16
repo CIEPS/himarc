@@ -14,8 +14,7 @@ export {
  * @returns {Object}
  */
 function mrkToObject (data) {
-  const result = syntaxAnalyzer(tokenizer(data));
-  result.data = toHimarc(result);
+  const result = toHimarc(syntaxAnalyzer(tokenizer(data)));
   return result;
 }
 
@@ -92,7 +91,6 @@ function syntaxAnalyzer (tokens) {
     if (token.type !== 'data') return token;
 
     const previousToken = getPreviousToken(tokens, index) || { type: null };
-    const nextToken = getNextToken(tokens, index) || { type: null };
 
     if (previousToken.type === 'startField') {
       token.type = 'tag';
@@ -109,7 +107,7 @@ function syntaxAnalyzer (tokens) {
       return token;
     }
 
-    if (previousToken.type === 'tag' && nextToken.type === 'subFieldCodeDelimiter') {
+    if (previousToken.type === 'tag') {
       token.type = 'indicators';
       const INDICATOR = /^[0-9\\]{2}$/;
       if (!INDICATOR.test(token.value)) {
@@ -159,7 +157,8 @@ function syntaxAnalyzer (tokens) {
  * @returns {Object}
  */
 function toHimarc (result) {
-  return result.data.map((token, index) => (token.type === 'startField') ? index : null)
+  const errors = result.errors || [];
+  const data = result.data.map((token, index) => (token.type === 'startField') ? index : null)
     .filter(indice => indice !== null)
     .reduce((accumulator, currentValue, index, arr) => {
       if (index + 2 <= arr.length) accumulator.push(arr.slice(index, index + 2));
@@ -193,14 +192,23 @@ function toHimarc (result) {
       }, {});
     })
     .map(field => {
+      if (!('subFields' in field) && !field.tag.startsWith('00')) field.subFields = [];
       if (field.tag === 'LDR') field.value = formatLeader(field.value);
       if (field.tag === '007') field.value = formatField007(field.value);
       return field;
     })
     .map((field, index, arr) => {
       if (field.tag === '008') {
-        const leader = arr.filter(item => item.tag === 'LDR')[0].value;
-        field.value = formatField008(field.value, leader.positions['06'], leader.positions['07']);
+        const leader = arr.filter(item => item.tag === 'LDR');
+        if (leader.length > 0) {
+          const leaderValue = leader[0].value;
+          field.value = formatField008(field.value, leaderValue.positions['06'], leaderValue.positions['07']);
+        } else {
+          errors.push({
+            type: 'field',
+            message: 'the leader is missing for the transformation of field 008'
+          });
+        }
       }
       return field;
     })
@@ -232,6 +240,7 @@ function toHimarc (result) {
       }
       return accumulator;
     }, {});
+  return { data, errors };
 }
 
 function toHTML (parsedContent) {
@@ -405,18 +414,6 @@ function formatField008 (value, typeOfRecord, bibliographicLevel) {
     accumulator.positions[current.position] = current.value;
     return accumulator;
   }, { positions: {} });
-}
-
-function getNextToken (arr, index) {
-  if (index < (arr.length - 1)) {
-    if (['whitespace', 'eol'].includes(arr[index + 1].type)) {
-      return getNextToken(arr, index + 1);
-    } else {
-      return arr[index + 1];
-    }
-  } else {
-    return null;
-  }
 }
 
 function getPreviousToken (arr, index) {
