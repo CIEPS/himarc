@@ -68,7 +68,7 @@ function tokenizer (input) {
 
     let value = '';
     const startPosition = position;
-    while (!(START_FIELD.test(char) || EOL.test(char) || SUBFIELD_CODE_DELIMITER.test(char) || position > (input.length - 1))) {
+    while (!(EOL.test(char) || SUBFIELD_CODE_DELIMITER.test(char) || position > (input.length - 1))) {
       value += char;
       char = input[++position];
     }
