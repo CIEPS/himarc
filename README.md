@@ -36,42 +36,48 @@ Ouput :
 ```json
 {
   "data": {
-    "264": {
-      "indicator1": "3",
-      "indicator2": "1",
-      "subFields": [
-        {
-          "a": "London"
-        },
-        {
-          "b": "Springer Nature Limited"
-        }
-      ]
-    },
-    "336": {
-      "indicator1": "\\",
-      "indicator2": "\\",
-      "subFields": [
-        {
-          "a": "text"
-        },
-        {
-          "2": "rdacontent"
-        }
-      ]
-    },
-    "337": {
-      "indicator1": "\\",
-      "indicator2": "\\",
-      "subFields": [
-        {
-          "a": "unmediated"
-        },
-        {
-          "2": "rdamedia"
-        }
-      ]
-    },
+    "264": [
+      {
+        "indicator1": "3",
+        "indicator2": "1",
+        "subFields": [
+          {
+            "a": "London"
+          },
+          {
+            "b": "Springer Nature Limited"
+          }
+        ]
+      }
+    ],
+    "336": [
+      {
+        "indicator1": "\\",
+        "indicator2": "\\",
+        "subFields": [
+          {
+            "a": "text"
+          },
+          {
+            "2": "rdacontent"
+          }
+        ]
+      }
+    ],
+    "337": [
+      {
+        "indicator1": "\\",
+        "indicator2": "\\",
+        "subFields": [
+          {
+            "a": "unmediated"
+          },
+          {
+            "2": "rdamedia"
+          }
+        ]
+      }
+    ],
     "510": [
       {
         "indicator1": "\\",
@@ -118,22 +124,50 @@ Ouput :
       }
     },
     "001": "0028-0836",
-    "007": {
+    "007": [
+      {
+        "positions": {
+          "00": "t",
+          "01": "a"
+        }
+      }
+    ],
+    "008": {
       "positions": {
-        "00": "t",
-        "01": "a"
+        "18": "w",
+        "19": "r",
+        "20": "|",
+        "21": "p",
+        "22": " ",
+        "23": " ",
+        "24": " ",
+        "28": " ",
+        "29": "0",
+        "33": "a",
+        "34": "0",
+        "38": " ",
+        "39": " ",
+        "00-05": "190816",
+        "06": "c",
+        "07-10": "1869",
+        "11-14": "9999",
+        "15-17": "enk",
+        "25-27": "   ",
+        "30-32": "   ",
+        "35-37": "eng"
       }
     },
-    "008": "190816c18699999enkwr|p       0   a0eng",
-    "035": {
-      "indicator1": "\\",
-      "indicator2": "\\",
-      "subFields": [
-        {
-          "a": "(ISSN)00280836"
-        }
-      ]
-    },
+    "035": [
+      {
+        "indicator1": "\\",
+        "indicator2": "\\",
+        "subFields": [
+          {
+            "a": "(ISSN)00280836"
+          }
+        ]
+      }
+    ],
     "044": {
       "indicator1": "\\",
       "indicator2": "\\",
