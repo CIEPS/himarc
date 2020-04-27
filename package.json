@@ -7,7 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "nyc --reporter=text --reporter=html mocha"
+    "test": "nyc --reporter=text --reporter=html mocha",
+    "build-demo": "parcel build -d docs demo/index.html"
   },
   "repository": {
     "type": "git",
@@ -20,9 +21,9 @@
   "license": "MIT",
   "devDependencies": {
     "chai": "^4.2.0",
-    "cssnano": "^4.1.10",
     "mocha": "^7.1.2",
-    "nyc": "^15.0.1"
+    "nyc": "^15.0.1",
+    "parcel": "^1.12.4"
   },
   "dependencies": {
     "ajv": "^6.12.2",
