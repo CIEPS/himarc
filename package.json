@@ -20,7 +20,13 @@
   "license": "MIT",
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^7.1.1",
-    "nyc": "^15.0.0"
+    "cssnano": "^4.1.10",
+    "mocha": "^7.1.2",
+    "nyc": "^15.0.1"
+  },
+  "dependencies": {
+    "ajv": "^6.12.2",
+    "bulma": "^0.8.2",
+    "json-schema-himarc": "git+https://github.com/CIEPS/json-schema-himarc.git"
   }
 }
