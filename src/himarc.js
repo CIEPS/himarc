@@ -1,6 +1,6 @@
 // MARCMaker Specifications : https://www.loc.gov/marc/makrbrkr.html#what-is-marc
 
-export {
+module.exports = {
   mrkToObject,
   tokenizer,
   syntaxAnalyzer,

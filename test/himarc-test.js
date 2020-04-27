@@ -6,7 +6,7 @@ const { expect } = require('chai');
 const fs = require('fs');
 const path = require('path');
 const mrkRecord = fs.readFileSync(path.join(__dirname, './data/nature.mrk'), 'utf8');
-const { tokenizer, syntaxAnalyzer, toHimarc } = require('../lib/bundle-node.js');
+const { tokenizer, syntaxAnalyzer, toHimarc } = require('../src/himarc.js');
 
 describe('hiMarc', function () {
   describe('tokenizer()', function () {
