@@ -223,7 +223,7 @@ describe('hiMarc', function () {
           }
         ]
       };
-      expect(result.data).to.be.deep.equal(expectedResult);
+      expect(result.fields).to.be.deep.equal(expectedResult);
     });
   });
 });

@@ -158,7 +158,7 @@ function syntaxAnalyzer (tokens) {
  */
 function toHimarc (result) {
   const errors = result.errors || [];
-  const data = result.data.map((token, index) => (token.type === 'startField') ? index : null)
+  const fields = result.data.map((token, index) => (token.type === 'startField') ? index : null)
     .filter(indice => indice !== null)
     .reduce((accumulator, currentValue, index, arr) => {
       if (index + 2 <= arr.length) accumulator.push(arr.slice(index, index + 2));
@@ -240,7 +240,7 @@ function toHimarc (result) {
       }
       return accumulator;
     }, {});
-  return { data, errors };
+  return { fields, errors };
 }
 
 function toHTML (parsedContent) {
