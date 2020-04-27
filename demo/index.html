@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Démo himarc</title>
   <style>
     .container {
       display: flex;
@@ -35,9 +35,9 @@
 
 <body>
   <label>Sélectionner un fichier mrk</label>
-  <input type='file' accept=".mrk" onchange="main.openFile(event)">
+  <input type='file' accept=".mrk">
   <div class="container">
-    <textarea id="record-mrk" rows="20" onchange="main.refreshMrk(event)"></textarea>
+    <textarea id="record-mrk" rows="20"></textarea>
     <textarea id="record-json" rows="20"></textarea>
   </div>
 
@@ -45,7 +45,7 @@
     An example of live Marc21 text syntax highlighting in a content-editable element.
   </p>
 
-  <pre contentEditable='true' id='editor' oninput="main.updateEditor(this)"></pre>
+  <pre contentEditable='true' id='editor'></pre>
  
   <script src="main.js"></script>
 </body>

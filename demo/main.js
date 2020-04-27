@@ -1,5 +1,9 @@
 import { mrkToObject, tokenizer, syntaxAnalyzer, toHTML } from '../src/himarc.js';
 
+const inputFile = document.querySelector('input[type="file"]');
+inputFile.addEventListener('change', openFile);
+const textareaRecordMrk = document.getElementById('record-mrk');
+textareaRecordMrk.addEventListener('change', refreshMrk);
 const editor = document.getElementById('editor');
 editor.addEventListener('keydown', event => {
   if (event.keyCode === 13) {
@@ -7,6 +11,7 @@ editor.addEventListener('keydown', event => {
     event.preventDefault();
   }
 });
+editor.addEventListener('input', (event) => updateEditor(event.target));
 editor.innerHTML = '=044 \\\\$cFIN$cENG';
 updateEditor(editor);
 
