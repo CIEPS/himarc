@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "nyc --reporter=text --reporter=html mocha",
-    "build-demo": "parcel build -d docs demo/index.html"
+    "build-demo": "parcel build -d docs --public-url ./docs/ demo/index.html"
   },
   "repository": {
     "type": "git",
