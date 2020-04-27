@@ -1,9 +1,36 @@
 import { mrkToObject, tokenizer, syntaxAnalyzer, toHTML } from '../src/himarc.js';
+import Ajv from 'ajv';
+import schema from 'json-schema-himarc/dist/himarc.schema.json';
+
+const ajv = new Ajv({ allErrors: true }); // options can be passed, e.g. {allErrors: true}
+const validate = ajv.compile(schema);
+
+const fileInput = document.querySelector('#file-input input[type=file]');
+fileInput.onchange = () => {
+  if (fileInput.files.length > 0) {
+    const fileName = document.querySelector('#file-input .file-name');
+    fileName.textContent = fileInput.files[0].name;
+  }
+};
 
 const inputFile = document.querySelector('input[type="file"]');
 inputFile.addEventListener('change', openFile);
+
 const textareaRecordMrk = document.getElementById('record-mrk');
 textareaRecordMrk.addEventListener('change', refreshMrk);
+
+const validateButton = document.getElementById('validate');
+validateButton.addEventListener('click', () => {
+  const validationResults = document.getElementById('validation-results');
+  const jsonTextArea = document.getElementById('record-json');
+  const valid = validate(JSON.parse(jsonTextArea.value));
+  if (valid) {
+    validationResults.innerText = 'All clear !';
+  } else {
+    validationResults.innerText = validate.errors.map(error => `${error.dataPath} : ${error.message}`).join('\n');
+  }
+});
+
 const editor = document.getElementById('editor');
 editor.addEventListener('keydown', event => {
   if (event.keyCode === 13) {
@@ -16,7 +43,11 @@ editor.innerHTML = '=044 \\\\$cFIN$cENG';
 updateEditor(editor);
 
 export function openFile (event) {
-  const input = event.target;
+  const fileInput = event.target;
+  if (fileInput.files.length > 0) {
+    const fileName = document.querySelector('#file-input .file-name');
+    fileName.textContent = fileInput.files[0].name;
+  }
   const mrkTextarea = document.getElementById('record-mrk');
   const jsonTextArea = document.getElementById('record-json');
   const reader = new window.FileReader();
@@ -24,7 +55,7 @@ export function openFile (event) {
     mrkTextarea.value = reader.result;
     jsonTextArea.value = JSON.stringify(mrkToObject(reader.result), null, 2);
   };
-  reader.readAsText(input.files[0]);
+  reader.readAsText(fileInput.files[0]);
 }
 
 export function refreshMrk (event) {
