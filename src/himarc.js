@@ -1,12 +1,47 @@
 // MARCMaker Specifications : https://www.loc.gov/marc/makrbrkr.html#what-is-marc
 
 module.exports = {
+  mrcToObject,
   mrkToObject,
   tokenizer,
   syntaxAnalyzer,
   toHimarc,
   toHTML
 };
+
+function mrcToObject (data) {
+  const tokens = data.split(String.fromCharCode(0x1E));
+  const leader = getLeaderFrom(tokens);
+  const directory = getDirectoryFrom(tokens);
+  const directoryEntries = getDirectoryEntriesFrom(directory);
+  const variableFields = getVariableFieldsFrom(tokens);
+  const fields = directoryEntries.map((entry, index) => {
+    const field = {};
+    if (entry.tag.startsWith('00')) {
+      field[entry.tag] = variableFields[index];
+    } else {
+      const fieldTag = field[entry.tag] = {};
+      const dataFieldTokens = variableFields[index].split(String.fromCharCode(0x1F));
+      fieldTag.indicator1 = getIndicator1From(dataFieldTokens);
+      fieldTag.indicator2 = getIndicator2From(dataFieldTokens);
+      fieldTag.subFields = getSubFieldFrom(dataFieldTokens);
+    }
+    return field;
+  }).reduce((previous, current) => {
+    const tag = Object.keys(current)[0];
+    if (isFieldRepeatable(tag)) {
+      if (!(tag in previous)) previous[tag] = [];
+      previous[tag].push(current[tag]);
+      return previous;
+    } else {
+      return Object.assign(previous, current);
+    }
+  }, {});
+  fields.LDR = leader;
+  fields['007'] = fields['007'].map(value => formatField007(value));
+  fields['008'] = formatField008(fields['008'], leader.positions['06'], leader.positions['07']);
+  return fields;
+}
 
 /**
  * The mrkToObject function takes the raw marc21 text, tokenize it, parse it and transform it into a javascript object
@@ -153,7 +188,7 @@ function syntaxAnalyzer (tokens) {
 /**
  * The toHimarc transform function takes the the tokens after the syntax analysis step and builds a representation of the Marc21
  * data into a javascript object
- * @param {Object} result Object fromt the syntaxAnalyzer function
+ * @param {Object} result Object from the syntaxAnalyzer function
  * @returns {Object}
  */
 function toHimarc (result) {
@@ -224,18 +259,18 @@ function toHimarc (result) {
           accumulator[current.tag] = current.value;
         }
       } else {
-        const currentWhithoutKeyTag = Object.keys(current).reduce((acc, key) => {
+        const currentWithoutKeyTag = Object.keys(current).reduce((acc, key) => {
           if (key !== 'tag') acc[key] = current[key];
           return acc;
         }, {});
         if (isFieldRepeatable(current.tag)) {
           if (current.tag in accumulator) {
-            accumulator[current.tag].push(currentWhithoutKeyTag);
+            accumulator[current.tag].push(currentWithoutKeyTag);
           } else {
-            accumulator[current.tag] = [currentWhithoutKeyTag];
+            accumulator[current.tag] = [currentWithoutKeyTag];
           }
         } else {
-          accumulator[current.tag] = currentWhithoutKeyTag;
+          accumulator[current.tag] = currentWithoutKeyTag;
         }
       }
       return accumulator;
@@ -300,8 +335,8 @@ function formatField007 (value) {
   if (isMaps(categoryOfMaterial)) {
     fieldInfos = initFieldInfos(value, 8);
   }
-  const isElectroniceRessource = (categoryOfMaterial) => categoryOfMaterial === 'c';
-  if (isElectroniceRessource(categoryOfMaterial)) {
+  const isElectronicResource = (categoryOfMaterial) => categoryOfMaterial === 'c';
+  if (isElectronicResource(categoryOfMaterial)) {
     fieldInfos = initFieldInfos(value, 14);
     spliceAndSetData(fieldInfos, 6, 9, value);
   }
@@ -483,4 +518,63 @@ function isFieldRepeatable (tag) {
     '844',
     '882'
   ].includes(tag);
+}
+
+function getLeaderFrom (tokens) {
+  const leader = tokens[0].slice(0, 24);
+  return {
+    positions: {
+      '00-04': leader.slice(0, 5),
+      '05': leader.charAt(5),
+      '06': leader.charAt(6),
+      '07': leader.charAt(7),
+      '08': leader.charAt(8),
+      '09': leader.charAt(9),
+      10: leader.charAt(10),
+      11: leader.charAt(11),
+      '12-16': leader.slice(12, 17),
+      17: leader.charAt(17),
+      18: leader.charAt(18),
+      19: leader.charAt(19),
+      20: leader.charAt(20),
+      21: leader.charAt(21),
+      22: leader.charAt(22)
+    }
+  };
+}
+
+function getDirectoryFrom (tokens) {
+  return tokens[0].slice(24);
+}
+
+function getDirectoryEntriesFrom (directory) {
+  return directory.match(/(.{1,12})/g)
+    .map(entry => {
+      return {
+        tag: entry.slice(0, 3),
+        lengthOfField: entry.slice(3, 7),
+        startingCharacterPosition: entry.slice(7, 12)
+      };
+    });
+}
+
+function getVariableFieldsFrom (tokens) {
+  return tokens.slice(1);
+}
+
+function getIndicator1From (dataFieldTokens) {
+  return dataFieldTokens[0][0] === ' ' ? '\\' : dataFieldTokens[0][0];
+}
+
+function getIndicator2From (dataFieldTokens) {
+  return dataFieldTokens[0][1] === ' ' ? '\\' : dataFieldTokens[0][1];
+}
+
+function getSubFieldFrom (dataFieldTokens) {
+  return dataFieldTokens.slice(1)
+    .map(subfield => {
+      return {
+        [subfield[0]]: subfield.slice(1).trim()
+      };
+    });
 }
