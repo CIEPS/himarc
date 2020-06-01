@@ -38,8 +38,9 @@ function mrcToObject (data) {
     }
   }, {});
   fields.LDR = leader;
-  fields['007'] = fields['007'].map(value => formatField007(value));
-  fields['008'] = formatField008(fields['008'], leader.positions['06'], leader.positions['07']);
+  fields['007'] = fields['007'] ? fields['007'].map(value => formatField007(value)) : [''];
+  const fields008 = fields['008'] || '';
+  fields['008'] = formatField008(fields008, leader.positions['06'], leader.positions['07']);
   return fields;
 }
 
