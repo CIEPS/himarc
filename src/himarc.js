@@ -70,6 +70,7 @@ function tokenizer (input) {
   let position = 0;
   while (position < input.length) {
     let char = input[position];
+    let beforeChar = input[position - 1];
 
     if (START_FIELD.test(char)) {
       tokens.push({ type: 'startField', value: char, startPosition: position });
@@ -96,7 +97,7 @@ function tokenizer (input) {
       continue;
     }
 
-    if (SUBFIELD_CODE_DELIMITER.test(char)) {
+    if (SUBFIELD_CODE_DELIMITER.test(char) && beforeChar !== '/') {
       tokens.push({ type: 'subFieldCodeDelimiter', value: char, startPosition: position });
       char = input[++position];
       continue;
@@ -104,9 +105,14 @@ function tokenizer (input) {
 
     let value = '';
     const startPosition = position;
-    while (!(EOL.test(char) || SUBFIELD_CODE_DELIMITER.test(char) || position > (input.length - 1))) {
+    while (
+      !EOL.test(char) &&
+      !(SUBFIELD_CODE_DELIMITER.test(char) && beforeChar !== '/') &&
+      !(position > (input.length - 1))
+    ) {
       value += char;
       char = input[++position];
+      beforeChar = input[position - 1];
     }
     tokens.push({ type: 'data', value: value, startPosition });
   }

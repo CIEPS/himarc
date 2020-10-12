@@ -144,6 +144,17 @@ describe('hiMarc', function () {
             '12-16': '00541'
           }
         },
+        880: [
+          {
+            indicator1: '\\',
+            indicator2: '\\',
+            subFields: [
+              {
+                6: '222-01/$1another title'
+              }
+            ]
+          }
+        ],
         '001': '0028-0836',
         '003': 'ISSN',
         '005': '20190817162300.0',
