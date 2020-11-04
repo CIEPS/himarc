@@ -35,7 +35,7 @@ Ouput :
 
 ```json
 {
-  "data": {
+  "fields": {
     "264": [
       {
         "indicator1": "3",
