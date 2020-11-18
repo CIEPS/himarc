@@ -408,7 +408,7 @@ function formatField008 (value, typeOfRecord, bibliographicLevel) {
     value
   }));
   spliceAndSetData(fieldInfos, 35, 38, value);
-  const isBooks = ['a', 't'].includes(typeOfRecord) && ['a', 'c', 'd', 'm'].includes(bibliographicLevel);
+  const isBooks = (typeOfRecord === 'a' && ['a', 'c', 'd', 'm'].includes(bibliographicLevel)) || typeOfRecord === 't';
   if (isBooks) {
     spliceAndSetData(fieldInfos, 24, 28, value);
     spliceAndSetData(fieldInfos, 18, 22, value);
@@ -435,7 +435,6 @@ function formatField008 (value, typeOfRecord, bibliographicLevel) {
   const isContinuingResources = typeOfRecord === 'a' && ['b', 'i', 's'].includes(bibliographicLevel);
   if (isContinuingResources) {
     spliceAndSetData(fieldInfos, 30, 33, value);
-    spliceAndSetData(fieldInfos, 25, 28, value);
   }
   const isVisualMaterials = ['g', 'k', 'o', 'r'].includes(typeOfRecord);
   if (isVisualMaterials) {
