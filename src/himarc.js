@@ -9,38 +9,49 @@ module.exports = {
   toHTML
 };
 
-function mrcToObject (data) {
+function mrcToObject (data, filterTag = []) {
   const tokens = data.split(String.fromCharCode(0x1E));
   const leader = getLeaderFrom(tokens);
   const directory = getDirectoryFrom(tokens);
   const directoryEntries = getDirectoryEntriesFrom(directory);
   const variableFields = getVariableFieldsFrom(tokens);
-  const fields = directoryEntries.map((entry, index) => {
-    const field = {};
-    if (entry.tag.startsWith('00')) {
-      field[entry.tag] = variableFields[index];
-    } else {
-      const fieldTag = field[entry.tag] = {};
-      const dataFieldTokens = variableFields[index].split(String.fromCharCode(0x1F));
-      fieldTag.indicator1 = getIndicator1From(dataFieldTokens);
-      fieldTag.indicator2 = getIndicator2From(dataFieldTokens);
-      fieldTag.subFields = getSubFieldFrom(dataFieldTokens);
-    }
-    return field;
-  }).reduce((previous, current) => {
-    const tag = Object.keys(current)[0];
-    if (isFieldRepeatable(tag)) {
-      if (!(tag in previous)) previous[tag] = [];
-      previous[tag].push(current[tag]);
-      return previous;
-    } else {
-      return Object.assign(previous, current);
-    }
-  }, {});
-  fields.LDR = leader;
-  if ('007' in fields) fields['007'] = fields['007'].map(value => formatField007(value));
-  const fields008 = fields['008'] || '';
-  fields['008'] = formatField008(fields008, leader.positions['06'], leader.positions['07']);
+  const fields = directoryEntries
+    .map((entry, index) => {
+      const variableField = variableFields[index];
+      return { entry, variableField };
+    })
+    .filter(({ entry, variableField }) => filterTag.length === 0 || filterTag.includes(entry.tag))
+    .map(({ entry, variableField }) => {
+      const field = {};
+      if (entry.tag.startsWith('00')) {
+        field[entry.tag] = variableField;
+      } else {
+        const fieldTag = field[entry.tag] = {};
+        const dataFieldTokens = variableField.split(String.fromCharCode(0x1F));
+        fieldTag.indicator1 = getIndicator1From(dataFieldTokens);
+        fieldTag.indicator2 = getIndicator2From(dataFieldTokens);
+        fieldTag.subFields = getSubFieldFrom(dataFieldTokens);
+      }
+      return field;
+    })
+    .reduce((previous, current) => {
+      const tag = Object.keys(current)[0];
+      if (isFieldRepeatable(tag)) {
+        if (!(tag in previous)) previous[tag] = [];
+        previous[tag].push(current[tag]);
+        return previous;
+      } else {
+        return Object.assign(previous, current);
+      }
+    }, {});
+  if (filterTag.length === 0 || filterTag.includes('LDR')) fields.LDR = leader;
+  if ((filterTag.length === 0 || filterTag.includes('007')) && '007' in fields) {
+    fields['007'] = fields['007'].map(value => formatField007(value));
+  }
+  if (filterTag.length === 0 || filterTag.includes('008')) {
+    const fields008 = fields['008'] || '';
+    fields['008'] = formatField008(fields008, leader.positions['06'], leader.positions['07']);
+  }
   return fields;
 }
 
