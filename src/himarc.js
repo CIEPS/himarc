@@ -9,6 +9,12 @@ module.exports = {
   toHTML
 };
 
+/**
+ * The mrcToObject function takes the marc21 format, tokenize it, parse it and transform it into a javascript object
+ * @param {string} data marc21 format
+ * @param {array} filterTag filter data only for input tag
+ * @returns {Object}
+ */
 function mrcToObject (data, filterTag = []) {
   const tokens = data.split(String.fromCharCode(0x1E));
   const leader = getLeaderFrom(tokens);
@@ -296,6 +302,12 @@ function toHimarc (result) {
   return { fields, errors };
 }
 
+/**
+ * The toHTML transform function takes the the tokens after the syntax analysis step and builds a representation of the Marc21
+ * data into HTML
+ * @param {Object} result Object from the syntaxAnalyzer function
+ * @returns {Object}
+ */
 function toHTML (parsedContent) {
   return parsedContent.reduce((accumulator, current) => {
     if (['whitespace', 'eol'].includes(current.type)) {
