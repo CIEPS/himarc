@@ -7,8 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "nyc --reporter=text --reporter=html mocha",
-    "build-demo": "parcel build -d docs --public-url ./ demo/index.html"
+    "test": "nyc --reporter=text --reporter=html mocha"
   },
   "repository": {
     "type": "git",
@@ -22,11 +21,10 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "mocha": "^8.2.1",
-    "nyc": "^15.1.0",
-    "parcel": "^1.12.4"
+    "nyc": "^15.1.0"
   },
   "dependencies": {
-    "ajv": "^6.12.6",
+    "ajv": "^7.0.1",
     "bulma": "^0.9.1",
     "json-schema-himarc": "git+https://github.com/CIEPS/json-schema-himarc.git"
   }
