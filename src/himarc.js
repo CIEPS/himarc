@@ -509,6 +509,7 @@ function isFieldRepeatable (tag) {
     '010',
     '011',
     '018',
+    '022',
     '036',
     '038',
     '040',
