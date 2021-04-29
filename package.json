@@ -19,13 +19,12 @@
   "author": "rmeja@issn.org",
   "license": "MIT",
   "devDependencies": {
-    "chai": "^4.2.0",
-    "mocha": "^8.2.1",
+    "chai": "^4.3.4",
+    "mocha": "^8.3.2",
     "nyc": "^15.1.0"
   },
   "dependencies": {
-    "ajv": "^7.0.1",
-    "bulma": "^0.9.1",
+    "ajv": "^7.2.4",
     "json-schema-himarc": "git+https://github.com/CIEPS/json-schema-himarc.git"
   }
 }
