@@ -14,7 +14,7 @@ describe('hiMarc', function () {
     it('should return a array of token from a marc21 record (ISO 2709)', function () {
       const tokens = tokenizer(mrkRecord);
       expect(tokens).to.be.an('array');
-      tokens.map(token => {
+      tokens.forEach(token => {
         expect(token).to.be.an('object');
         expect(token).to.have.property('type');
         expect(token.type).to.be.a('string');
@@ -32,14 +32,14 @@ describe('hiMarc', function () {
       expect(result).to.be.an('object');
       expect(result).to.have.property('data');
       expect(result.data).to.be.an('array');
-      result.data.map(fieldInfo => {
+      result.data.forEach(fieldInfo => {
         expect(fieldInfo).to.be.an('object');
         expect(fieldInfo).to.have.property('type');
         expect(fieldInfo.type).to.be.a('string');
         expect(fieldInfo).to.have.property('value');
         if (fieldInfo.type === 'dataFieldInfo') {
           expect(fieldInfo.value).to.be.a('array');
-          fieldInfo.value.map(fieldInfo => {
+          fieldInfo.value.forEach(fieldInfo => {
             expect(fieldInfo).to.be.an('object');
             expect(fieldInfo).to.have.property('type');
             expect(fieldInfo.type).to.be.a('string');
@@ -56,14 +56,14 @@ describe('hiMarc', function () {
       });
       expect(result).to.have.property('errors');
       expect(result.errors).to.be.an('array');
-      result.errors.map(error => {
+      result.errors.forEach(error => {
         expect(error).to.be.an('object');
         expect(error).to.have.property('type');
         expect(error.type).to.be.a('string');
         expect(error).to.have.property('value');
         if (error.type === 'dataFieldInfo') {
           expect(error.value).to.be.a('array');
-          error.value.map(error => {
+          error.value.forEach(error => {
             expect(error).to.be.an('object');
             expect(error).to.have.property('type');
             expect(error.type).to.be.a('string');
@@ -208,34 +208,30 @@ describe('hiMarc', function () {
             subFields: [{ a: '(ISSN)00280836' }]
           }
         ],
-        '039': [
-          {
-            indicator1: '\\',
-            indicator2: '9',
-            subFields: [
-              { a: '201908171623' },
-              { b: 'VLOAD' },
-              { c: '201908171559' },
-              { d: 'VLOAD' },
-              { c: '201908161254' },
-              { d: 'ICBIB' },
-              { c: '201905041728' },
-              { d: 'VLOAD' },
-              { y: '200406091632' },
-              { z: 'load' },
-              { w: 'GBR_20190816.mrc' },
-              { x: '3' }
-            ]
-          }
-        ],
+        '039': {
+          indicator1: '\\',
+          indicator2: '9',
+          subFields: [
+            { a: '201908171623' },
+            { b: 'VLOAD' },
+            { c: '201908171559' },
+            { d: 'VLOAD' },
+            { c: '201908161254' },
+            { d: 'ICBIB' },
+            { c: '201905041728' },
+            { d: 'VLOAD' },
+            { y: '200406091632' },
+            { z: 'load' },
+            { w: 'GBR_20190816.mrc' },
+            { x: '3' }
+          ]
+        },
         '044': { indicator1: '\\', indicator2: '\\', subFields: [{ c: 'GBR' }] },
-        ABC: [
-          {
-            indicator1: '1',
-            indicator2: '2',
-            subFields: [{ a: 'Lorem' }, { B: 'Ipsum' }, { c: 'Dolor' }]
-          }
-        ]
+        ABC: {
+          indicator1: '1',
+          indicator2: '2',
+          subFields: [{ a: 'Lorem' }, { B: 'Ipsum' }, { c: 'Dolor' }]
+        }
       };
       expect(result.fields).to.be.deep.equal(expectedResult);
     });
@@ -357,34 +353,30 @@ describe('hiMarc', function () {
             subFields: [{ a: '(ISSN)00280836' }]
           }
         ],
-        '039': [
-          {
-            indicator1: '\\',
-            indicator2: '9',
-            subFields: [
-              { a: '201908171623' },
-              { b: 'VLOAD' },
-              { c: '201908171559' },
-              { d: 'VLOAD' },
-              { c: '201908161254' },
-              { d: 'ICBIB' },
-              { c: '201905041728' },
-              { d: 'VLOAD' },
-              { y: '200406091632' },
-              { z: 'load' },
-              { w: 'GBR_20190816.mrc' },
-              { x: '3' }
-            ]
-          }
-        ],
+        '039': {
+          indicator1: '\\',
+          indicator2: '9',
+          subFields: [
+            { a: '201908171623' },
+            { b: 'VLOAD' },
+            { c: '201908171559' },
+            { d: 'VLOAD' },
+            { c: '201908161254' },
+            { d: 'ICBIB' },
+            { c: '201905041728' },
+            { d: 'VLOAD' },
+            { y: '200406091632' },
+            { z: 'load' },
+            { w: 'GBR_20190816.mrc' },
+            { x: '3' }
+          ]
+        },
         '044': { indicator1: '\\', indicator2: '\\', subFields: [{ c: 'GBR' }] },
-        ABC: [
-          {
-            indicator1: '1',
-            indicator2: '2',
-            subFields: [{ a: 'Lorem' }, { B: 'Ipsum' }, { c: 'Dolor' }]
-          }
-        ]
+        ABC: {
+          indicator1: '1',
+          indicator2: '2',
+          subFields: [{ a: 'Lorem' }, { B: 'Ipsum' }, { c: 'Dolor' }]
+        }
       };
       expect(result).to.be.deep.equal(expectedResult);
     });

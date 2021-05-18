@@ -1,5 +1,7 @@
 // MARCMaker Specifications : https://www.loc.gov/marc/makrbrkr.html#what-is-marc
 
+const allJsonSchema = require('json-schema-himarc');
+
 module.exports = {
   mrcToObject,
   mrkToObject,
@@ -500,54 +502,10 @@ function spliceAndSetData (arr, start, end, data) {
 }
 
 function isFieldRepeatable (tag) {
-  return ![
-    'LDR',
-    '001',
-    '003',
-    '005',
-    '008',
-    '010',
-    '011',
-    '018',
-    '022',
-    '036',
-    '038',
-    '040',
-    '042',
-    '043',
-    '044',
-    '045',
-    '066',
-    '100',
-    '110',
-    '111',
-    '130',
-    '240',
-    '241',
-    '243',
-    '245',
-    '254',
-    '256',
-    '261',
-    '262',
-    '263',
-    '265',
-    '306',
-    '310',
-    '315',
-    '350',
-    '357',
-    '507',
-    '514',
-    '517',
-    '523',
-    '537',
-    '655',
-    '841',
-    '842',
-    '844',
-    '882'
-  ].includes(tag);
+  const repeatableTag = Object.keys(allJsonSchema.register.fields.properties).filter(field => {
+    return allJsonSchema.register.fields[field].isRepeatable;
+  });
+  return repeatableTag.includes(tag);
 }
 
 function getLeaderFrom (tokens) {
