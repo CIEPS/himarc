@@ -219,6 +219,7 @@ function syntaxAnalyzer (tokens) {
  */
 function toHimarc (result) {
   const errors = result.errors || [];
+  const cache = [];
   const fields = result.data.map((token, index) => (token.type === 'startField') ? index : null)
     .filter(indice => indice !== null)
     .reduce((accumulator, currentValue, index, arr) => {
@@ -274,30 +275,30 @@ function toHimarc (result) {
       return field;
     })
     .reduce((accumulator, current) => {
-      if ('value' in current) {
-        if (isFieldRepeatable(current.tag)) {
-          if (current.tag in accumulator) {
-            accumulator[current.tag].push(current.value);
-          } else {
-            accumulator[current.tag] = [current.value];
-          }
-        } else {
-          accumulator[current.tag] = current.value;
-        }
-      } else {
-        const currentWithoutKeyTag = Object.keys(current).reduce((acc, key) => {
+      const value = ('value' in current)
+        ? current.value
+        : Object.keys(current).reduce((acc, key) => {
           if (key !== 'tag') acc[key] = current[key];
           return acc;
         }, {});
-        if (isFieldRepeatable(current.tag)) {
-          if (current.tag in accumulator) {
-            accumulator[current.tag].push(currentWithoutKeyTag);
-          } else {
-            accumulator[current.tag] = [currentWithoutKeyTag];
-          }
+
+      if (isFieldRepeatable(current.tag)) {
+        if (current.tag in accumulator) {
+          accumulator[current.tag].push(value);
         } else {
-          accumulator[current.tag] = currentWithoutKeyTag;
+          accumulator[current.tag] = [value];
         }
+      } else {
+        if (cache.includes(current.tag)) {
+          errors.push({
+            type: 'field',
+            tag: current.tag,
+            message: "field is repeated when it shouldn't"
+          });
+        } else {
+          cache.push(current.tag);
+        }
+        accumulator[current.tag] = value;
       }
       return accumulator;
     }, {});

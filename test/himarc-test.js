@@ -233,7 +233,24 @@ describe('hiMarc', function () {
           subFields: [{ a: 'Lorem' }, { B: 'Ipsum' }, { c: 'Dolor' }]
         }
       };
+      const expectedErrors = [
+        { type: 'unknown', value: 'tu quoque mi fili', startPosition: 465 },
+        {
+          type: 'tag',
+          value: 'ABC',
+          startPosition: 572,
+          message: 'tag field is invalid'
+        },
+        {
+          type: 'indicators',
+          value: '123',
+          startPosition: 577,
+          message: 'Indicators must have two characters in every variable data field'
+        },
+        { type: 'field', tag: '044', message: "field is repeated when it shouldn't" }
+      ];
       expect(result.fields).to.be.deep.equal(expectedResult);
+      expect(result.errors).to.be.deep.equal(expectedErrors);
     });
   });
 
