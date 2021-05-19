@@ -292,7 +292,7 @@ function toHimarc (result) {
         if (cache.includes(current.tag)) {
           errors.push({
             type: 'field',
-            tag: current.tag,
+            value,
             message: "field is repeated when it shouldn't"
           });
         } else {
