@@ -247,7 +247,7 @@ describe('hiMarc', function () {
           startPosition: 577,
           message: 'Indicators must have two characters in every variable data field'
         },
-        { type: 'field', tag: '044', message: "field is repeated when it shouldn't" }
+        { type: 'field', value: '044', message: "field is repeated when it shouldn't" }
       ];
       expect(result.fields).to.be.deep.equal(expectedResult);
       expect(result.errors).to.be.deep.equal(expectedErrors);
