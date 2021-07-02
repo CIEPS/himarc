@@ -350,7 +350,8 @@ function formatLeader (leader) {
       19: leader.charAt(19),
       20: leader.charAt(20),
       21: leader.charAt(21),
-      22: leader.charAt(22)
+      22: leader.charAt(22),
+      23: leader.charAt(23)
     }
   };
 }
@@ -527,7 +528,8 @@ function getLeaderFrom (tokens) {
       19: leader.charAt(19),
       20: leader.charAt(20),
       21: leader.charAt(21),
-      22: leader.charAt(22)
+      22: leader.charAt(22),
+      23: leader.charAt(23)
     }
   };
 }
