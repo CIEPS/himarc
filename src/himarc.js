@@ -152,6 +152,7 @@ function syntaxAnalyzer (tokens) {
     if (token.type !== 'data') return token;
 
     const previousToken = getPreviousToken(tokens, index) || { type: null };
+    const nextToken = getNextToken(tokens, index) || { type: null };
 
     if (previousToken.type === 'startField') {
       token.type = 'tag';
@@ -171,7 +172,10 @@ function syntaxAnalyzer (tokens) {
     if (previousToken.type === 'tag') {
       token.type = 'indicators';
       const INDICATOR = /^[0-9\\]{2}$/;
-      if (!INDICATOR.test(token.value)) {
+      if (nextToken.type !== 'subFieldCodeDelimiter') {
+        token.message = 'parsing error: subfield delimiter not found';
+        errors.push(token);
+      } else if (!INDICATOR.test(token.value)) {
         token.message = 'Indicators must have two characters in every variable data field';
         errors.push(token);
       }
@@ -490,6 +494,18 @@ function getPreviousToken (arr, index) {
       return getPreviousToken(arr, index - 1);
     } else {
       return arr[index - 1];
+    }
+  } else {
+    return null;
+  }
+}
+
+function getNextToken (arr, index) {
+  if (index < arr.length - 1) {
+    if (['whitespace', 'eol'].includes(arr[index + 1].type)) {
+      return getNextToken(arr, index +1);
+    } else {
+      return arr[index + 1];
     }
   } else {
     return null;

@@ -79,6 +79,14 @@ describe('hiMarc', function () {
         expect(error.startPosition).to.be.a('number');
       });
     });
+
+    it('missing subfield delimitator should return an error', function() {
+      const mrk = String.raw`=035  \\a(ISSN)00280836`
+      const result = syntaxAnalyzer(tokenizer(mrk));
+
+      expect(result.errors.length).to.be.equal(1);
+      expect(result.errors[0].message).to.be.equal('parsing error: subfield delimiter not found');
+    });
   });
 
   describe('toHimarc()', function () {
@@ -256,7 +264,7 @@ describe('hiMarc', function () {
   });
 
   describe('mrcToObject()', function () {
-    it('should return an record Object JS', function () {
+    it('should return a record Object JS', function () {
       const result = mrcToObject(mrcRecord);
       const expectedResult = {
         264: [
