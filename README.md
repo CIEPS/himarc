@@ -1,8 +1,13 @@
+This repo has been archived, it is now hosted here :
+
+https://gitlab.com/cieps-open-source/himarc
+
 [![Build Status](https://travis-ci.org/CIEPS/hiMarc.svg?branch=master)](https://travis-ci.org/CIEPS/hiMarc)
 ![npm](https://img.shields.io/npm/v/himarc)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#)
 
 # himarc
+
 Another marc21 analyzer in text format
 
 ## Install
